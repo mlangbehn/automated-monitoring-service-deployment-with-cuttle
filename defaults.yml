@@ -32,7 +32,7 @@ secrets:
 
 common:
   sysdig:
-    enabled: False
+    enabled: false
   firewall:
     friendly_networks:
       - "{{ private_ipv4.network }}/{{ private_ipv4.netmask }}"
@@ -41,17 +41,17 @@ common:
     allow_from:
       - "{{ private_ipv4.network }}/{{ private_ipv4.netmask }}"
       - "{{ public_ipv4.network }}/{{ public_ipv4.netmask }}"
-    disable_dns: True
+    disable_dns: true
   users:
     - name: blueboxadmin
-      #pass:
+      # pass:
       public_keys: []
 
   hwraid:
     enabled: false
 
 sshagentmux:
-  enabled: False
+  enabled: false
 
 database:
   host: 172.16.0.17
@@ -71,7 +71,7 @@ database:
       host: '172.16.0.%'
 
 serverspec:
-  enabled: True
+  enabled: true
 
 sensu:
   client:
@@ -158,9 +158,6 @@ apt_repos:
   erlang:
     repo: http://packages.erlang-solutions.com/debian
     key_url: https://packages.erlang-solutions.com/debian/erlang_solutions.asc
-#  aptly:
-#    repo: https://apt-mirror.openstack.blueboxgrid.com/aptly/squeeze
-#    key_url: https://apt-mirror.openstack.blueboxgrid.com/keys/aptly.key
   elasticsearch:
     repo: http://artifacts.elastic.co/packages/5.x/apt/
     key_url: http://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -186,10 +183,10 @@ apt_repos:
     repo: ~
     key_url: ~
 
-pxe_files: True
+pxe_files: true
 
 pxe:
-  enable_server: True
+  enable_server: true
   servers:
     - name: test
       mac: 08:00:27:09:4C:2B
@@ -225,7 +222,8 @@ kibana:
   force_config: true
 
 elasticsearch:
-  restart_on_config: true # enable in dev for easier testing, disable in prod
+  # enable in dev for easier testing, disable in prod
+  restart_on_config: true
 
 grafana:
   dashboards:
@@ -248,7 +246,7 @@ git_repos:
   ursula: https://github.com/blueboxgroup/ursula.git
 
 support_tools:
-  enabled: True
+  enabled: true
   git:
     - name: ursula-master
       path: /opt/git/ursula/master
