@@ -8,7 +8,7 @@ public_ipv4: "{{ hostvars[inventory_hostname][public_interface]['ipv4'] }}"
 private_ipv4: "{{ hostvars[inventory_hostname][private_interface]['ipv4'] }}"
 
 serverspec:
-  enabled: True
+  enabled: true
 
 apache:
   listen:
@@ -35,15 +35,15 @@ database:
 
 graphite:
   amqp:
-    enabled: False
-    verbose: False
+    enabled: false
+    verbose: false
     host: 172.16.0.15
     port: 5672
     vhost: /graphite
     user: graphite
     password: graphite
     exchange: metrics
-    metric_name_in_body: True
+    metric_name_in_body: true
 
 rabbitmq:
   users:
@@ -72,18 +72,6 @@ sensu:
       password: sensu
       vhost: /sensu
       hostgroup: sensu
-#    handlers:
-#      default:
-#        - flapjack_http
-#      flapjack:
-#        enabled: False
-#        host: 127.0.0.1
-#        port: 6380
-#      flapjack_http:
-#        enabled: True
-#        uri: http://127.0.0.1:3090
-#        ttl: -1 # -1 disables, otherwise httpbroker re-sends last received state until ttl expires
-#        service_owner: development
   api:
     bind_ip: 0.0.0.0
     firewall:
@@ -108,8 +96,8 @@ flapjack:
     base_url: "http://monitor.local/flapjack_api/"
   receivers:
     httpbroker:
-      enabled: True
-      debug: True
+      enabled: true
+      debug: true
   firewall:
     - port: 3080
       src: "{{ public_ipv4.network }}/{{ public_ipv4.netmask }}"
@@ -119,7 +107,7 @@ flapjack:
       src: "{{ public_ipv4.network }}/{{ public_ipv4.netmask }}"
 
 openid_proxy:
-  http_redirect: False
+  http_redirect: false
   apache:
     servername: monitor.local
   listen:
@@ -148,7 +136,7 @@ openid_proxy:
 
 
   ssl:
-    enabled: False
+    enabled: false
 
 netdata:
   enabled: true
@@ -169,10 +157,10 @@ grafana:
   host: "{{ hostvars[groups['grafana'][0]][private_interface]['ipv4']['address']|default('172.16.1.103') }}"
   server:
     http_port: 3001
-    http_addr:  0.0.0.0
+    http_addr: 0.0.0.0
     root_url: "/grafana/"
   security:
-    enabled: True
+    enabled: true
     admin_user: admin
     admin_password: admin
     anonymous: true
