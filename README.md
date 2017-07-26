@@ -43,46 +43,48 @@ As well as providing a local dashboard, netdata is sending system metrics
 to graphite. All internal communication is happening via eth2 which is
 a vagrant private network and the user accesses it over eth1.
 
-```
+```text
 
 
-                       +----------------------------------------------------------------------------------------------------------------------------+
-                       |                                                     Vagrant                                                                |
-                       |                                                                                                                            |
-                       |            +-----------------------------+                    +----------------------------------------+                   |
-                       |            |           Dashboard         |                    |               Monitor                  |                   |
-     XXXXXX            |            |                             |                    |                                        |                   |
-     X    XX           |            |                             |                    |                                        |                   |
-    XXXXXXXX           |            |   +-----------------------+ |                    |                                        |                   |
-        X              |       eth1 |   |                       | |                    |                                        |                   |
-XXX    X   XXX +----------------------> |   Apache SSL /        | |                    |                                        |                   |
-    XX XXX             |            |   |   Reverse Proxy       | |                    +-------------+                          |                   |
-      XXX              |            |   |                       | | eth2          eth2 ||            |                          |                   |
-        X              |            |   +-----------------------+ +------------------->-|  Uchiwa    |                          |                   |
-        X              |            |              |              ||                   ||            |                          |                   |
-       XX              |            |   +----------v------------+ ||                   +-------------+    +------------------+  |                   |
-     X XXX             |            |   |                       | ||                   |                  |                  |  |                   |
-    X     X            |            |   |   OAuth2 Proxy        | ||                   +-------------+    |Sensu Server/API  |  |                   |
-           X           |            |   |                       | ||                   ||            |    |                  |  |                   |
-                       |            |   |                       | |------------------->-| Grafana    |    +------------------+  |                   |
-                       |            |   +-----------------------+ ||                   ||            |                          |                   |
-                       |            |              |              ||                   +-------------+    +------------------+  |                   |
-                       |            |   +----------v------------+ ||                   |                  |                  |  |                   |
-                       |            |   |                       | ||                   +-------------+    |  Graphite/Carbon |  |                   |
-                       |            |   | Apache Reverse Proxy/ +--------------------->-|            |    |                  |  |                   |
-                       |            |   | Dashboard             | ||                   || Graphite   |    +------------------+  |                   |
-                       |            |   |                       | ||                   || Dashboard  |                          |                   |
-                       |            |   +-----------------------+ ||                   +-------------+     +-----------------+  |                   |
-                       |            |        |                    ||                   |                   |                 |  |                   |
-                       |            |   +----v-----+ +---------+  ||                   +-------------+     |  Redis/RabbitMQ |  |                   |
-                       |            |   |Netdata   +-> Netdata |  ||                   ||            |     |                 |  |                   |
-                       |            |   |Dashboard | |         |  +------------------->-| Netdata    |     +-----------------+  |                   |
-                       |            |   +----------+ +---------+  |                    ||            |                          |                   |
-                       |            |                             |                    +-------------+                          |                   |
-                       |            |                             |                    |                                        |                   |
-                       |            |                             |                    |                                        |                   |
-                       |            +-----------------------------+                    +----------------------------------------+                   |
-                       +----------------------------------------------------------------------------------------------------------------------------+
+                         +----------------------------------------------------------------------------------------------------------------------------+   
+                         |                                                     Vagrant                                                                |   
+                         |                                                                                                                            |   
+                         |            +-----------------------------+                    +----------------------------------------+                   |   
+                         |            |           Dashboard         |                    |               Monitor                  |                   |   
+       XXXXXX            |            |                             |                    |                                        |                   |   
+       X    XX           |            |                             |                    |                                        |                   |   
+      XXXXXXXX           |            |   +-----------------------+ |                    |                                        |                   |   
+          X              |       eth1 |   |                       | |                    |                                        |                   |   
+  XXX    X   XXX +----------------------> |   Apache SSL /        | |                    |                                        |                   |   
+      XX XXX             |            |   |   Reverse Proxy       | |                    +-------------+                          |                   |   
+        XXX              |            |   |                       | | eth2          eth2 ||            |                          |                   |   
+          X              |            |   +-----------------------+ +------------------->-|  Uchiwa    |                          |                   |   
+          X              |            |              |              ||                   ||            |                          |                   |   
+         XX              |            |   +----------v------------+ ||                   +-------------+    +------------------+  |                   |   
+       X XXX             |            |   |                       | ||                   |                  |                  |  |                   |   
+      X     X            |            |   |   OAuth2 Proxy        | ||                   +-------------+    |Sensu Server/API  |  |                   |   
+             X           |            |   |                       | ||                   ||            |    |                  |  |                   |   
+                         |            |   |                       | |------------------->-| Grafana    |    +------------------+  |                   |   
+                         |            |   +-----------------------+ ||                   ||            |                          |                   |   
+                         |            |              |              ||                   +-------------+    +------------------+  |                   |   
+                         |            |   +----------v------------+ ||                   |                  |                  |  |                   |   
+                         |            |   |                       | ||                   +-------------+    |  Graphite/Carbon |  |                   |   
+                         |            |   | Apache Reverse Proxy/ +--------------------->-|            |    |                  |  |                   |   
+                         |            |   | Dashboard             | ||                   || Graphite   |    +------------------+  |                   |   
+                         |            |   |                       | ||                   || Dashboard  |                          |                   |   
+                         |            |   +-----------------------+ ||                   +-------------+     +-----------------+  |                   |   
+                         |            |        |                    ||                   |                   |                 |  |                   |   
+                         |            |   +----v-----+ +---------+  ||                   +-------------+     |  Redis/RabbitMQ |  |                   |   
+                         |            |   |Netdata   +-> Netdata |  ||                   ||            |     |                 |  |                   |   
+                         |            |   |Dashboard | |         |  +------------------->-| Netdata    |     +-----------------+  |                   |   
+                         |            |   +----------+ +---------+  |                    ||            |                          |                   |   
+                         |            |                             |                    +-------------+                          |                   |   
+                         |            |                             |                    |                                        |                   |   
+                         |            |                             |                    |                                        |                   |   
+                         |            +-----------------------------+                    +----------------------------------------+                   |   
+                         +----------------------------------------------------------------------------------------------------------------------------+   
+
+
 ```
 
 ## Deploy
@@ -99,7 +101,7 @@ I use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) t
 manage my Python VirtualEnvs.  If you use a different tool or just install straight
 to system Python like a boss you may need to alter some of the following commands:
 
-```bash
+```shell
 $ git clone https://github.com/IBM/cuttle.git
 $ cd cuttle
 $ mkvirtualenv cuttle
@@ -135,7 +137,7 @@ that you can resolve this URL locally.
 Initiate the deployment by using `ursula-cli` which has been installed into your
 python environment by the above steps:
 
-```bash
+```shell
 $ ursula --provisioner=vagrant envs/example/monitor site.yml
 View Vagrant status at vagrant.log
 Starting ['monitor', 'dashboard']
@@ -148,9 +150,9 @@ Friday 21 July 2017  08:49:04 -0500 (0:00:00.043)       0:12:16.508 ***********
 ```
 
 > Note: it may take a while here depending on the speed of your internet connection
-there's a fairly large base vagrant image to download and then ansible will run and
-install lots of packages on those VMs.  See [Install behind a proxy](/README.md#run-behind-a-docker-proxy-for-local-dev)
-For some help speeding the install up by utilizing a proxy.
+> there's a fairly large base vagrant image to download and then ansible will run and
+> install lots of packages on those VMs.  See [Install behind a proxy](/README.md#run-behind-a-docker-proxy-for-local-dev)
+> For some help speeding the install up by utilizing a proxy.
 
 Hopefully all went well and you ended up with a completed Ansible run.  From
 here you should open a web browser (I like to use a private browser to ensure I
@@ -175,4 +177,3 @@ place.
 
 Any server deployed in the same inventory with sensu-client, netdata, etc enabled
 will also start reporting monitoring and metrics back to the monitor server.
-
