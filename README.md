@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/IBM/automated-monitoring-service-deployment-with-cuttle.svg?branch=master)](https://travis-ci.org/IBM/automated-monitoring-service-deployment-with-cuttle)
+
 # Deploying a OAuth2 secured Monitoring Server
 
 Alongside our 2FA secured bastion we also use a 2FA secured web dashboard/portal
