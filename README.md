@@ -21,17 +21,16 @@ to keep it simple.  Our second server will be the OAuth2 secured dashboard/porta
 
 ## Environment
 
-You'll find the inventory for this deployment scenario in [envs/example/monitor](envs/example/monitor).
-The majority of our settings are in [group_vars/all](envs/example/monitor/group_vars/all.yml)
-but you may find some in [defaults.yml]([group_vars/all](envs/example/defaults.yml) or
-some vagrant overrides in [vagrant.yml](envs/example/vagrant.yml).
+You'll find the inventory for this deployment scenario in [monitor](monitor).
+The majority of our settings are in [monitor/group_vars/all.yml](monitor/group_vars/all.yml)
+but you may find some in [defaults.yml](defaults.yml) or
+some vagrant overrides in [monitor/vagrant.yml](monitor/vagrant.yml).
 
 I'll be using the `--provisioner=vagrant` option in `ursula-cli` to do the deployment
-which means that Vagrant will use the file [envs/example/monitor/vagrant.yml](envs/example/monitor/vagrant.yml)
-to build the VMs and [envs/example/vagrant.yml](envs/example/vagrant.yml) to load
-any additional ansible variables specific to the vagrant environment.  I've tried to
-keep any values dynamic so this should work on the cloud or somewhere other than
-Vagrant with minimal changes.
+which means that Vagrant will use the file [monitor/vagrant.yml](monitor/vagrant.yml)
+to build the VMs and load any additional ansible variables specific to the
+vagrant environment.  I've tried to keep any values dynamic so this should work
+on the cloud or somewhere other than Vagrant with minimal changes.
 
 ## Architecture
 
@@ -99,14 +98,18 @@ Machines, you'll just need to modify the inventory a bit and skip the
 The first thing is to clone this repo and prepare your environment to run ansible.
 I use [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io/en/latest/) to
 manage my Python VirtualEnvs.  If you use a different tool or just install straight
-to system Python like a boss you may need to alter some of the following commands:
+to system Python like a boss you may need to alter some of the following commands.
+After doing so, you will need to clone the upstream cuttle repo and change directory
+into it:
 
 ```shell
+$ git clone https://github.com/IBM/automated-monitoring-service-deployment-with-cuttle.git
+$ cd automated-monitoring-service-deployment-with-cuttle
+$ mkvirtualenv cuttle-monitor
+$ pip install -r requirements.txt
+$ cd ..
 $ git clone https://github.com/IBM/cuttle.git
 $ cd cuttle
-$ mkvirtualenv cuttle
-$ workon cuttle
-$ pip install -r requirements.txt
 ```
 
 ### Deploy
@@ -138,7 +141,7 @@ Initiate the deployment by using `ursula-cli` which has been installed into your
 python environment by the above steps:
 
 ```shell
-$ ursula --provisioner=vagrant envs/example/monitor site.yml
+$ ursula --provisioner=vagrant ../automated-monitoring-service-deployment-with-cuttle/monitor site.yml
 View Vagrant status at vagrant.log
 Starting ['monitor', 'dashboard']
 ...
@@ -151,25 +154,24 @@ Friday 21 July 2017  08:49:04 -0500 (0:00:00.043)       0:12:16.508 ***********
 
 > Note: it may take a while here depending on the speed of your internet connection
 > there's a fairly large base vagrant image to download and then ansible will run and
-> install lots of packages on those VMs.  See [Install behind a proxy](/README.md#run-behind-a-docker-proxy-for-local-dev)
-> For some help speeding the install up by utilizing a proxy.
+> install lots of packages on those VMs.
 
 Hopefully all went well and you ended up with a completed Ansible run.  From
 here you should open a web browser (I like to use a private browser to ensure I
 don't get surprised by a saved session or cookie) at https://control.local/.
 
-We have a self-signed certificate in the ansible inventory `envs/example/defaults.yml`
+We have a self-signed certificate in the ansible inventory `defaults.yml`
 in the dictionary under `apache_auth.ssl` so the first thing you'll need to do
 is tell the browser to make an exception for the key and then it will redirect
 you to github for the OAuth process. Enter your Github credentials and it should then take
-you back to the control dashboard
+you back to the control dashboard:
 
-![cuttle dashboard](images/deploy_monitor_dashboard_1.png "Cuttle Dashboard").
+![cuttle dashboard](images/deploy_monitor_dashboard_1.png "Cuttle Dashboard")
 
 From here you can get to any of the monitoring tools we have deployed by clicking the
 appropriate link:
 
-![cuttle dashboard](images/deploy_monitor_dashboard_2.png "Cuttle Dashboard 2").
+![cuttle dashboard](images/deploy_monitor_dashboard_2.png "Cuttle Dashboard 2")
 
 You should see data appearing in all of these tools as cuttle uses the ansible
 inventory to help inform each tool how to connect and report to the appropriate
