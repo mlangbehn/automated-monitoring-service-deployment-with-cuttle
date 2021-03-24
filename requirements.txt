@@ -6,3 +6,4 @@ ansible>=2.3,<2.4
 python-heatclient
 requests[security]
 -e git://github.com/blueboxgroup/ursula-cli.git@master#egg=ursula-cli
+pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
